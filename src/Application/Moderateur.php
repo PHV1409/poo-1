@@ -24,14 +24,28 @@ class Moderateur extends User{
     }
 
     /**
+     * Noter qui écrase la méthode noter() de ma classe parente User
+     * C'est ce qu'on appelle l'override (réécriture)
+     * @param int $note
+     * @return string
+     */
+    public function noter($note = 4){
+        //return parent::noter($note);
+        // permet de retourner la méthode parrent
+        //ne sert à rien cette fois (pas encore très clair)
+
+        return "Un modérateur a noté : " .$note;
+    }
+
+    /**
      * @param $nom
      * @param $prenom
-     * @param $email
-     * @param int $age
-     * @param $etoile
-     * @param $description
+     * @param string $email
+     * @param string $age
+     * @param string $etoile
+     * @param string $description
      */
-    public function __construct($nom, $prenom,$email,$age,$etoile, $description){
+    public function __construct($nom, $prenom, $email = "", $age = "", $etoile = "", $description= ""){
         // J'appel mon constructeur parent
         parent::__construct($nom,$prenom,$email,$age);
         $this->etoile = $etoile;

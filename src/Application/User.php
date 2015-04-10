@@ -13,7 +13,6 @@ namespace Application;
  */
 class User extends AbstractUser implements AuthentificationInterface, InscriptionInterface{
 
-
     /**
      * @var
      */
@@ -25,6 +24,11 @@ class User extends AbstractUser implements AuthentificationInterface, Inscriptio
     const PAYS = "France";
 
     /**
+     * Constante de formation
+     */
+    const FORMATION = "3W Academy";
+
+    /**
      * Constante de langue
      */
     const LANGUES = "Français";
@@ -32,16 +36,44 @@ class User extends AbstractUser implements AuthentificationInterface, Inscriptio
     /**
      * Methode pour commenter
      */
-    public function commenter(){
+    public function commenter($message){
         return $this->prenom. " a commenté!";
     }
 
-    public function noter($note){
-        return $this->prenom. " a noté! " .$note;
+    /**
+     * $this représente l'objet définit par la fonction toString
+     * qui converti l'objet en chaine de caractères
+     * @param int $note
+     * @return string
+     */
+    public function noter($note = 4){
+        return $this. " a noté : " .$note;
     }
 
-    public function repondre(User $user){
-        return $this->prenom. " a répondu au commentaire de " .$user->prenom;
+    /**
+     * Interagir avec un utilisateur, un message et une note
+     * @param User $user
+     * @param string $message
+     * @param $note
+     * @return string
+     */
+    public function interagir(User $user, $message = "", $note){
+        // Appel de la méthode repondre() et de la méthode noter() en interne
+        return $this->repondre($user,$message). " " .$this->noter($note);
+    }
+
+
+
+    /**
+     * final présise que la méthode ne peut être réécrite par les classes filles
+     */
+    public final function partagerResauxSociaux(){
+        return $this . " a partagé sur Facebook et Twitter :) ";
+    }
+
+    public function repondre(User $user, $message = "Aucun message"){
+        // return $this->prenom est remplacé par $this qui utilise la méthode __toString
+        return $this. "<span style='color:red'> a répondu à au commentaire de : </span>" .$user->prenom. " : " . $message;
     }
 
     /**
@@ -111,6 +143,27 @@ class User extends AbstractUser implements AuthentificationInterface, Inscriptio
         // TODO: Implement getDateCreated() method.
     }
 
+    /**
+     * @return string
+     */
+    static public function getPays(){
+        return "Tous les utilisateurs viennent de " . self::PAYS;
+    }
+
+    /**
+     * @return string
+     */
+    static public function getFormation(){
+        return "Tous les utilisateurs ont suivi la formation " . self::FORMATION;
+    }
+
+    /**
+     * @return string
+     */
+    static public function getLangues(){
+        return "Tous les utilisateurs parlent le " . self::LANGUES;
+    }
+
 
     public function inscription()
     {
@@ -148,6 +201,8 @@ class User extends AbstractUser implements AuthentificationInterface, Inscriptio
     public function __toString(){
         return $this->prenom." ".$this->nom;
     }
+
+
 
 
 } // FIN de Class User

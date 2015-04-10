@@ -1,10 +1,3 @@
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-    </head>
-    <body>
-        <div class="container">
 <?php
 
 // inclusion de l'autoload: charger de tous les includes
@@ -19,12 +12,40 @@ use Application\Moderateur;
 use Application\Ecrivain;
 use Application\Commercial\Commercial;
 
+use Application\VRP;
 use Libraries\User as UserLib;
 
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+
+$session = new Session(); // cré un objet Session
+$session->start(); // je démarre une session
+
+// Je récupère mon compteur en session,
+// si il n'éxiste pas il prendra la valeur 0
+$compteur = $session->get('compteur', 0);
+
+$compteur++; // j'incrémente mon compteur
+
+// j'enregistre en session mon nouveau compteur
+$session->set('compteur',$compteur);
+
+$compteur = $session->get('compteur');
+echo "<span style='color:red'>Mon compteur est de : </span>" . $compteur; // j'affiche mon compteur
+
+?>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+<?php
 
 // create a log channel
 $log = new Logger('3WA utilise le composant Monolog'); // créer un message de log
@@ -51,7 +72,6 @@ foreach($finder as $file){
     //J'affiche chaque image de mon dossier
     echo "<img src='img/" .$file->getRelativePathname(). "' alt='' class='img-responsive col-md-6' style='height:400px'/>";
 }
-
 
 // Je charge la classe Parser située dans le dossier Yaml
 use Symfony\Component\Yaml\Parser;
@@ -147,7 +167,7 @@ echo "Nouvelle email de Said " .$user2->getEmail();
 
 echo "<br />";
 
-$user1 = clone $user2;
+//$user1 = clone $user2;
 $user1->setAge(10);
 
 echo $user1->getAge(); // cloner l'objet dans un nouvel espace mémoire
@@ -237,7 +257,7 @@ echo $commercial1->getMag();
 echo "<br />";
 echo $commercial1->getExperience();
 echo "<br />";
-echo $commercial1->commenter();
+echo $commercial1->commenter('bla bla bla');
 echo "<br />";
 echo $commercial1->noter(5);
 echo "<br />";
@@ -288,7 +308,32 @@ echo $ecrivain1->deconnexion();
 echo "<br />";
 
 
+echo "<br/>";
+$moderateur2 = new Moderateur("Julien", "Boyer", 4);
 
+echo beautiful($moderateur2->noter(17));
+
+echo beautiful($moderateur2->partagerResauxSociaux());
+
+// vrp doit être usé en haut de mon index use Application\Vrp;
+$vrp = new  VRP('Leclerc', 100);
+echo beautiful("Le VRP travaillant dans le commerce est : " . $vrp->getCommerce());
+
+
+// utilisation d'un helper beautiful() et d'une méthode static de classe
+echo beautiful(User::getPays());
+echo "<hr />";
+
+
+// utilisation d'un helper beautiful() et d'une méthode static de classe
+echo beautiful(User::getFormation());
+echo "<hr />";
+
+// utilisation d'un helper beautiful() et d'une méthode static de classe
+echo beautiful(User::getLangues());
+echo "<hr />";
+
+echo beautiful($user1->interagir($user2, "C'est cool la POO", 16));
 
 
 ?>

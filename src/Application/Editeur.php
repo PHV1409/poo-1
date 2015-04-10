@@ -72,6 +72,16 @@ class Editeur extends User implements EditeurInterface{
         return $this->prenom. " " .$this->nom. " \"éditeur\" a promu cet article ". $article;
     }
 
+    /**
+     * @param User $user
+     * @param string $message
+     * @return string
+     */
+    public function repondre(User $user, $message = "Aucun message"){
+        //$user est un objet de la classe User
+        return "<span style='color:red'>Un éditeur a répondu à : </span>" .$user;
+    }
+
 
 // FIN de la class Editeur
 }

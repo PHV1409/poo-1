@@ -28,7 +28,7 @@ class Commercial extends User implements EditeurInterface{
      * Methode pour vendre
      * Les méthodes de classes font des traitements et retournent une ou plusieurs valeurs
      */
-    public function vendre(){ // pas de echo dans les méthodes
+    public function vendre($user){ // pas de echo dans les méthodes
         return $this->prenom. " a vendu un article!";
     }
 
@@ -108,6 +108,25 @@ class Commercial extends User implements EditeurInterface{
     public function promouvoir($article)
     {
         return $this->prenom. " " .$this->nom. " \"commercial\" a promu cet article ". $article;
+    }
+
+    /**
+     * @param $message
+     * @return string
+     */
+    public function commenter($message){
+        return "Commercial a commenté : " . $message;
+    }
+
+    /**
+     * Interagir avec un utilisateur, un message et une note
+     * @param User $user
+     * @param string $message
+     * @return string
+     */
+    public function vendreCommenter(User $user, $message = ""){
+        // Appel de la méthode vendre() et de la méthode commenter() en interne
+        return $this->vendre($user). " " . $this->commenter($message);
     }
 
     /**
